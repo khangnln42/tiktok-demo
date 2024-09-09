@@ -2,7 +2,15 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faMagnifyingGlass, faSignIn, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCircleQuestion,
+    faCircleXmark,
+    faEarthAsia,
+    faEllipsisVertical,
+    faKeyboard,
+    faMagnifyingGlass,
+    faSpinner,
+} from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless'; // different import path!
 //import local
 import styles from './Header.module.scss';
@@ -10,8 +18,25 @@ import images from '~/assets/images';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import Button from '~/components/Button';
+import Menu from '~/components/Popper/Menu';
 
 const cx = classNames.bind(styles);
+
+const MENU_ITEMS = [
+    {
+        icon: <FontAwesomeIcon icon={faEarthAsia} />,
+        title: 'Tiếng Việt',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+        title: 'Feedback and help',
+        to: '/feedback',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faKeyboard} />,
+        title: 'Keyboard shortcut',
+    },
+];
 
 function Header() {
     const [searchResult, setSearchResult] = useState([]);
@@ -31,7 +56,7 @@ function Header() {
                 <div>
                     <Tippy
                         interactive
-                        visible={searchResult.length > 0}
+                        visible={(searchResult.length = 0)}
                         render={(attrs) => (
                             <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                                 <PopperWrapper>
@@ -62,16 +87,21 @@ function Header() {
                     <Button text>Upload</Button>
                     <Button
                         primary
-                        disabled
-                        onClick={() => alert('Clicked!')}
-                        leftIcon={<FontAwesomeIcon icon={faSignIn} />}
-                        rightIcon={<FontAwesomeIcon icon={faSignIn} />}
+                        // disabled
+                        // onClick={() => alert('Clicked!')}
+                        // leftIcon={<FontAwesomeIcon icon={faSignIn} />}
+                        // rightIcon={<FontAwesomeIcon icon={faSignIn} />}
                     >
                         Log in
                     </Button>
-                    <Button rounded className={cx('custom-btn')} leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
+                    {/* <Button rounded className={cx('custom-btn')} leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
                         Register
-                    </Button>
+                    </Button> */}
+                    <Menu items={MENU_ITEMS}>
+                        <button className={cx('more-btn')}>
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                        </button>
+                    </Menu>
                 </div>
             </div>
         </header>
