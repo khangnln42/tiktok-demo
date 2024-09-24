@@ -1,24 +1,29 @@
 //import nodemodule
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleQuestion,
-    faCircleXmark,
+    faCoins,
     faEarthAsia,
     faEllipsisVertical,
+    faGear,
     faKeyboard,
-    faMagnifyingGlass,
-    faSpinner,
+    faSignOut,
+    faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import Tippy from '@tippyjs/react/headless'; // different import path!
+import Tippy from '@tippyjs/react';
+
+import 'tippy.js/dist/tippy.css';
 //import local
 import styles from './Header.module.scss';
 import images from '~/assets/images';
-import { Wrapper as PopperWrapper } from '~/components/Popper';
-import AccountItem from '~/components/AccountItem';
+
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
+import { MessageIcon, InboxIcon, UploadIcon } from '~/components/Icons';
+import Image from '~/components/Image';
+import Search from '../Search';
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +31,21 @@ const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faEarthAsia} />,
         title: 'Tiếng Việt',
+        children: {
+            title: 'Language',
+            data: [
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+            ],
+        },
     },
     {
         icon: <FontAwesomeIcon icon={faCircleQuestion} />,
@@ -39,13 +59,43 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-    const [searchResult, setSearchResult] = useState([]);
+    const currentUser = true;
 
-    useEffect(() => {
-        setTimeout(() => {
-            setSearchResult([1, 2]);
-        }, 0);
-    }, []);
+    //handle menu
+    const handleMenu = (menuItem) => {
+        console.log(menuItem);
+        switch (menuItem.type) {
+            case 'language':
+                //handle change language
+                break;
+            default: //
+        }
+    };
+
+    const userMenu = [
+        {
+            icon: <FontAwesomeIcon icon={faUser} />,
+            title: 'View profile',
+            to: '/@AAAprofile',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faCoins} />,
+            title: 'Get coins',
+            to: '/coin',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faGear} />,
+            title: 'Settings',
+            to: '/settings',
+        },
+        ...MENU_ITEMS,
+        {
+            icon: <FontAwesomeIcon icon={faSignOut} />,
+            title: 'Log out',
+            to: '/',
+            separate: true,
+        },
+    ];
 
     return (
         <header className={cx('wrapper')}>
@@ -53,54 +103,58 @@ function Header() {
                 <div className={cx('logo')}>
                     <img src={images.logo} alt="tiktok" />
                 </div>
-                <div>
-                    <Tippy
-                        interactive
-                        visible={(searchResult.length = 0)}
-                        render={(attrs) => (
-                            <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                                <PopperWrapper>
-                                    <h4 className={cx('search-title')}>Accounts</h4>
-                                    <AccountItem />
-                                    <AccountItem />
-                                    <AccountItem />
-                                    <AccountItem />
-                                </PopperWrapper>
-                            </div>
-                        )}
-                    >
-                        <div className={cx('search')}>
-                            <input type="" name="" placeholder="Search accounts and videos" spellCheck={false} />
-                            <button className={cx('search-clear')}>
-                                <FontAwesomeIcon icon={faCircleXmark} />
-                            </button>
-                            <FontAwesomeIcon className={cx('search-loading')} icon={faSpinner} />
-
-                            <button className={cx('search-btn')}>
-                                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            </button>
-                        </div>
-                    </Tippy>
-                </div>
+                <Search />
                 <div className={cx('actions')}>
-                    {/* <Button primary href="https://fullstack.edu.vn" target='_blank'> */}
-                    <Button text>Upload</Button>
-                    <Button
-                        primary
-                        // disabled
-                        // onClick={() => alert('Clicked!')}
-                        // leftIcon={<FontAwesomeIcon icon={faSignIn} />}
-                        // rightIcon={<FontAwesomeIcon icon={faSignIn} />}
-                    >
-                        Log in
-                    </Button>
-                    {/* <Button rounded className={cx('custom-btn')} leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
-                        Register
-                    </Button> */}
-                    <Menu items={MENU_ITEMS}>
-                        <button className={cx('more-btn')}>
-                            <FontAwesomeIcon icon={faEllipsisVertical} />
-                        </button>
+                    {currentUser ? (
+                        <>
+                            <Tippy delay={[0, 200]} content="Upload Video">
+                                <Button outline leftIcon={<UploadIcon />}>
+                                    Upload
+                                </Button>
+                            </Tippy>
+                            <Tippy delay={[0, 200]} content="Message">
+                                <button className={cx('action-btn')}>
+                                    <MessageIcon />
+                                </button>
+                            </Tippy>
+                            <Tippy content="Inbox">
+                                <button className={cx('action-btn')}>
+                                    <InboxIcon />
+                                </button>
+                            </Tippy>
+                        </>
+                    ) : (
+                        <>
+                            {/* <Button primary href="https://fullstack.edu.vn" target='_blank'> */}
+                            <Button text>Upload</Button>
+                            <Button
+                                primary
+                                // disabled
+                                // onClick={() => alert('Clicked!')}
+                                // leftIcon={<FontAwesomeIcon icon={faSignIn} />}
+                                // rightIcon={<FontAwesomeIcon icon={faSignIn} />}
+                            >
+                                Log in
+                            </Button>
+                            {/* <Button rounded className={cx('custom-btn')} leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
+                                Register
+                            </Button> */}
+                        </>
+                    )}
+
+                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenu}>
+                        {currentUser ? (
+                            <Image
+                                src="https://s1.vnecdn.net/vnexpress/restruct/i/v935/premierleague/graphics/logo-mu.svg"
+                                className={cx('user-avatar')}
+                                alt="Nguyễn Văn A"
+                                fallback="https://fullstack.edu.vn/assets/f8-icon-lV2rGpF0.png"
+                            />
+                        ) : (
+                            <button className={cx('more-btn')}>
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        )}
                     </Menu>
                 </div>
             </div>

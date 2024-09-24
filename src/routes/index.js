@@ -8,8 +8,9 @@ import Upload from '~/pages/Upload';
 const publicRoutes = [
     { path: '/', component: Home },
     { path: '/following', component: Following },
-    { path: '/profile', component: Profile },
+    { path: '/@:nickname', component: Profile },
     { path: '/upload', component: Upload, layout: HeaderLayout },
+    // { path: '/search', component: Search, layout: null },
 ];
 //các Routes cần login
 const privateRoutes = [];

@@ -1,11 +1,17 @@
 @import 'normalize.css';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@300;400;500;600;700;900;&display=swap');
+//Khong dung roboto, layfont tiktok dung (ko thuong mai)
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@300;400;500;600;700;900;&display=swap');
 
 :root {
-    --primary: rgba(254, 44, 85, 1);
-    --black: black;
-    --white:white;
-    --text-color: rgb(22, 24, 35);
+    --primary: #fe2c55;
+    --black: #000;
+    --white: #fff;
+    --text-color: #161823;
+
+    //Default layout
+    --default-layout-header-height: 60px;
+    --default-layout-width: 1150px;
+    --default-layout-horizontal-spacer: 24px;
 }
 
 ////reset css
@@ -20,14 +26,16 @@ html {
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'TikTokFont', sans-serif;
     font-size: 1.6rem;
     line-height: 1.5rem;
     text-rendering: optimizespeed;
     color: var(--text-color);
 }
 
-button, input, [tabindex] {
+button,
+input,
+[tabindex] {
     border: none;
     outline: none;
 }
@@ -35,4 +43,52 @@ button, input, [tabindex] {
 a[href] {
     text-decoration: none;
     color: var(--text-color);
-} 
+}
+
+//Fontembed
+@font-face {
+    font-family: TikTokFont;
+    src: url('/assets/fonts/TikTokFont-Regular.woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: TikTokFont;
+    src: url('/assets/fonts/TikTokFont-Bold.woff2');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: TikTokFont;
+    src: url('/assets/fonts/TikTokFont-Semibold.woff2');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: TikTokDisplayFont;
+    src: url('/assets/fonts/TikTokDisplayFont-Bold.woff2');
+    font-weight: 700;
+}
+
+//Custom tippy css tooltip
+body {
+    .tippy-box {
+        border-radius: 8px;
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 2.2rem;
+        background-color: rgba(84, 84, 84, 0.92);
+    }
+
+    .tippy-arrow {
+        color: rgba(84, 84, 84, 0.92);
+    }
+
+    .tippy-content {
+        padding: 8px 9px;
+    }
+
+    .tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
+        top: -8px;
+    }
+}
