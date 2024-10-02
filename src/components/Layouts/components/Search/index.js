@@ -10,7 +10,7 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/Icons';
 import { useDebounce } from '~/hooks';
-import * as searchServices from '~/apiServices/searchServices'; //khi export lẻ thì import dạng * as ...
+import * as searchService from '~/services/searchService'; //khi export lẻ thì import dạng * as ...
 
 const cx = classNames.bind(styles);
 
@@ -100,7 +100,7 @@ function Search() {
         ////Tách ra api search
         const fetApi = async () => {
             setLoading(true);
-            const result = await searchServices.search(debounced, 'less');
+            const result = await searchService.search(debounced, 'less');
             setSearchResult(result);
 
             setLoading(false);
@@ -118,7 +118,18 @@ function Search() {
         setShowResult(false);
     };
 
+    const handleChange = (e) => {
+        const searchValue = e.target.value;
+        if (!searchValue.startsWith(' ')) {
+            setSearchValue(searchValue);
+        }
+    };
+
+    const handleSubmit = () => {};
+
     return (
+        //Using a Wrapper <div> or <span> tag around the reference element solves
+        //this by creating a new parentNode context
         <div>
             <HeadlessTippy
                 interactive
@@ -141,7 +152,7 @@ function Search() {
                         value={searchValue}
                         placeholder="Search accounts and videos"
                         spellCheck={false}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        onChange={handleChange}
                         onFocus={() => setShowResult(true)}
                     />
                     {!!searchValue && !loading && (
@@ -151,7 +162,7 @@ function Search() {
                     )}
                     {loading && <FontAwesomeIcon className={cx('search-loading')} icon={faSpinner} />}
 
-                    <button className={cx('search-btn')}>
+                    <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()} onClick={handleSubmit}>
                         <SearchIcon />
                     </button>
                 </div>

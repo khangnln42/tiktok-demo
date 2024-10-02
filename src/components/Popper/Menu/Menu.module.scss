@@ -17,6 +17,11 @@
     padding-bottom: 8px;
 }
 
+//Menu body
+.menu-body {
+    overflow-y: overlay;
+}
+
 //Menu-item
 .menu-item {
     width: 100%;
@@ -36,6 +41,7 @@
 
 //Menu Hedaer
 .header {
+    flex-shrink: 0;
     position: relative;
     height: 50px;
     margin-top: -8px;
