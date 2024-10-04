@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 //import local
 import styles from './Header.module.scss';
 import images from '~/assets/images';
-import routesConfig from '~/config/routes';
+import config from '~/config';
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
 import { MessageIcon, InboxIcon, UploadIcon } from '~/components/Icons';
@@ -153,7 +153,7 @@ function Header() {
 
     //handle menu
     const handleMenu = (menuItem) => {
-        console.log(menuItem);
+        // console.log(menuItem);
         switch (menuItem.type) {
             case 'language':
                 //handle change language
@@ -191,7 +191,7 @@ function Header() {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <div className={cx('logo')}>
-                    <Link to={routesConfig.home}>
+                    <Link to={config.routes.home}>
                         <img src={images.logo} alt="tiktok" />
                     </Link>
                 </div>
